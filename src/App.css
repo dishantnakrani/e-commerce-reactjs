@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair:ital,wght@1,300&display=swap');
+
+.icon-color {
+  color: white;
+}
+
+.icon-color-mini {
+  color: #212121;
+}
+
+a {
+  text-decoration: none;
+}
+
+.custom-typography {
+  font-family: 'Playfair', serif;
+  font-size: 35px;
+}
