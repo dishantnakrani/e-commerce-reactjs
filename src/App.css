@@ -16,3 +16,7 @@ a {
   font-family: 'Playfair', serif;
   font-size: 35px;
 }
+
+.custom-toolbar {
+  /* z-index: 1; */
+}

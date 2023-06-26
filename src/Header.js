@@ -162,7 +162,7 @@ export default function Header() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: '#50abf5' }}>
-                <Toolbar>
+                <Toolbar className="custom-toolbar">
                     <Link className='icon-color' to='/'>
                         <Typography
                             variant="h6"
