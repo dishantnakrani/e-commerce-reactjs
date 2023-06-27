@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Agdasima&family=Open+Sans:wght@300;400&family=Playfair:ital,wght@1,300&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -188,4 +190,34 @@ input[type=radio],
 input[type=range] {
     cursor: pointer;
     font-family: Shantell Sans, cursive;
+}
+
+header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionFixed.mui-fixed.css-zxtyt4-MuiPaper-root-MuiAppBar-root {
+    /* display: none; */
+    position: absolute;
+    top: 66px;
+}
+
+header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionFixed.mui-fixed.css-1a7a1ce-MuiPaper-root-MuiAppBar-root {
+    position: absolute;
+    top: 64px;
+}
+
+.css-96uuyl {
+    position: relative;
+    left: 60px;
+}
+
+@media only screen and (max-width: 600px) {
+    .css-96uuyl {
+        position: relative;
+        left: 1px;
+    }
+}
+
+.category {
+    text-decoration: 1px solid underline black;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
 }

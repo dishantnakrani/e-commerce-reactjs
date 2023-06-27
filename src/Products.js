@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-
+import './product.css';
 import Layout from './Layout'
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
@@ -19,17 +19,14 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import './product.css';
-import Image1 from './images/csk.jpeg'
-import cskJercy from './images/gujarat.webp'
-// import demo from ''
-import { Rating } from '@mui/material';
 
-let n = 1
-const drawerWidth = 240;
-n++
+const drawerWidth = 200;
+
+const cateGender = [
+    'Jerseys',
+    'merchandise',
+    'Gears'
+];
 
 
 
@@ -62,7 +59,7 @@ const productData = [
         Wpl: "No",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "merchandise",
         Rating: 3.3,
         discountprice: 208,
         mrp: 231,
@@ -142,7 +139,7 @@ const productData = [
         Wpl: "no",
         International: "no",
         Size: "1 Litter",
-        Category: "merchandise",
+        Category: "Jersey",
         Rating: 4.8,
         discountprice: 24499,
         mrp: 29999,
@@ -157,7 +154,7 @@ const productData = [
         Wpl: "no",
         International: "no",
         Size: "",
-        Category: "merchandise",
+        Category: "gears",
         Rating: 4.8,
         discountprice: 1499,
         mrp: 1599,
@@ -217,7 +214,7 @@ const productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "merchandise",
         Rating: 4.1,
         discountprice: 2199,
         mrp: 2499,
@@ -247,7 +244,7 @@ const productData = [
         Wpl: "yes",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Gears",
         Rating: 4.8,
         discountprice: 35999,
         mrp: 39999,
@@ -277,7 +274,7 @@ const productData = [
         Wpl: "yes",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Gears",
         Rating: "1.9",
         discountprice: 259,
         mrp: 459,
@@ -390,7 +387,7 @@ const productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Gears    ",
         Rating: "1.9",
         discountprice: 259,
         mrp: 459,
@@ -404,7 +401,7 @@ const productData = [
         Wpl: "yes",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "merchandise",
         Rating: "1.9",
         discountprice: 259,
         mrp: 459,
@@ -462,7 +459,7 @@ const productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Gears",
+        Category: "Jersey",
         Rating: "1.9",
         discountprice: 1599,
         mrp: 1899,
@@ -495,6 +492,35 @@ const productData = [
         discountprice: 33999,
         mrp: 39999,
     },
+    {
+        id: 31,
+        products: "SG TEST LEATHER CRICKET BALL RED",
+        thumbnail: "https://res.cloudinary.com/dbe8yf165/image/upload/v1685796137/cricify/accessories/SG_test_cricket_leather_ball-red-1799_m1q2w3.jpg",
+        Men: "yes",
+        Women: "yes",
+        Ipl: "yes",
+        Wpl: "yes",
+        International: "yes",
+        Size: "One Size-Free Size",
+        Category: "Gears",
+        Rating: "4.2",
+        discountprice: 3499,
+        mrp: 3599,
+    }, {
+        id: 32,
+        products: "GUJARAT GIANTS(GG) WOMEN JERSEY",
+        thumbnail: "https://res.cloudinary.com/dbe8yf165/image/upload/v1685796147/cricify/wpl/gg-women-match-jersey-2023-999-front_sfprmj.jpg",
+        Men: "no",
+        Women: "yes",
+        Ipl: "yes",
+        Wpl: "no",
+        International: "no",
+        Size: "One Size-Free Size",
+        Category: "Merchandise",
+        Rating: "1.9",
+        discountprice: 33999,
+        mrp: 39999,
+    },
 
 
 
@@ -504,68 +530,227 @@ const productData = [
 
 
 export default function Products({ name, ...props }) {
+    const [selectedGenders, setSelectedGenders] = useState([]);
+    const [sortOption, setSortOption] = useState('lowToHigh');//for price sorting.
+
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+        console.log(event.target.value)
+
+
+        if (event.target.value == 'highToLow') { }
+    };
+
+
+    let sortedProductList = [...productData];
+    if (sortOption === 'lowToHigh') {
+        sortedProductList.sort((a, b) => a.discountprice - b.discountprice);
+    } else if (sortOption === 'highToLow') {
+        sortedProductList.sort((a, b) => b.discountprice - a.discountprice);
+    }
 
 
     useEffect(() => {
         console.log(productData);
     }, []);
 
-    const [show, setShow] = useState(false);
+    //This code for CATEGORIES filter 
 
-    const handleClose = () => setShow(false);
-    const toggleShow = () => setShow((s) => !s);
+    let [categoryFilters, setcategoryFilters] = useState(new Set());
+    function updateFilters(checked, categoryFilter) {
+        if (checked)
+            setcategoryFilters((prev) => new Set(prev).add(categoryFilter));
+        if (!checked)
+            setcategoryFilters((prev) => {
+                const next = new Set(prev);
+                next.delete(categoryFilter);
+                return next;
+            });
+    }
+    const filteredProducts =
+        categoryFilters.size === 0
+            ? productData
+            : productData.filter((p) => categoryFilters.has(p.Category));
 
-    // const productData =[]
+
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+    const handleCloseDrawer = () => {
+        if (mobileOpen) {
+            setMobileOpen(false);
+        }
+    };
+
+    const drawer = (
+        <div>
+            <Toolbar />
+            <Divider />
+            <List>
+
+                <div>
+                    <input
+                        type="radio"
+                        id="lowToHigh"
+                        value="lowToHigh"
+                        checked={sortOption === 'lowToHigh'}
+                        onChange={handleSortChange}
+                    />
+                    <label htmlFor="lowToHigh">Low to High</label>
+                </div>
+                <div>
+                    <input
+                        type="radio"
+                        id="highToLow"
+                        value="highToLow"
+                        checked={sortOption === 'highToLow'}
+                        onChange={handleSortChange}
+                    />
+                    <label htmlFor="highToLow">High to Low</label>
+                </div>
+
+                <div className='d-flex justify-content-center'>
+                    <p className='category'>
+                        CATEGORIES
+                    </p>
+                </div>
+                {cateGender.map((elm, index) => {
+                    return (
+                        <div className="form-check ms-2" key={index}>
+                            <label className="form-check-label" >
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    onClick={handleCloseDrawer}
+                                    onChange={(e) => updateFilters(e.target.checked, elm)}
+                                />
+                                {elm}
+                            </label>
+                        </div>
+                    );
+                })}
+
+
+            </List>
+            <Divider />
+        </div>
+    );
+
+    const container = window !== undefined ? () => window().document.body : undefined;
 
 
 
     return (
         <Layout>
-            <div className='div-filter'>
-                <Button variant="primary" onClick={toggleShow} className="me-2 button-class">
-                    filter
-                </Button>
-            </div>
-            <Offcanvas show={show} onHide={handleClose} className='canvas-drop' {...props} style={{ backgroundColor: ' hsla(0,0%,100%,.61' }}>
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Filter</Offcanvas.Title>
-                    <button className='clear-filters-btn' onClick={handleClose}>Clear Filter</button>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    Some text as placeholder. In real life you can have the elements you
-                    have chosen. Like, text, images, lists, etc.
-                </Offcanvas.Body>
-            </Offcanvas>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        ml: { sm: `${drawerWidth}px` },
+                    }}
+                >
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            Responsive drawer
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    aria-label="mailbox folders"
+                >
+                    <Drawer
+                        container={container}
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box
+                    component="main"
+                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+                >
+                    <Toolbar />
+                    <div>
+                        <div className='row d-flex justify-content-center m-0 p-0' >
+                            {filteredProducts.map((i) =>
+                                <div className='col-lg-4 col-md-6'>
+                                    <div className='product-container '>
+                                        <span title="Add to Wishlist" className="wishlist-heart">
+                                            <svg
+                                                stroke="currentColor"
+                                                fill="currentColor"
+                                                strokeWidth="0"
+                                                viewBox="0 0 512 512"
+                                                height="1em"
+                                                width="1em"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
+                                            </svg>
+                                        </span>
+                                        <div className="product-image-container">
+                                            <img className='product-image' src={i.thumbnail} />
 
-
-            <div>
-                <div className='row m-0 p-0' >
-                    {productData.map((i) =>
-                        <div className='col-lg-3'>
-                            <div className='product-container '>
-                                <span title="Add to Wishlist" className="wishlist-heart">
-                                    <svg
-                                        stroke="currentColor"
-                                        fill="currentColor"
-                                        strokeWidth="0"
-                                        viewBox="0 0 512 512"
-                                        height="1em"
-                                        width="1em"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
-                                    </svg>
-                                </span>
-                                <div className="product-image-container">
-                                    <img className='product-image' src={i.thumbnail} />
-
-                                </div>
-                                <div className="product-info">
-                                    <div className="title-rating">
-                                        <h3 title="India 2003-06 Jersey">{i.products}</h3>
-                                        <div className="rating-star-high">
-                                            <span>{i.Rating}</span>
-                                            <span>
+                                        </div>
+                                        <div className="product-info">
+                                            <div className="title-rating">
+                                                <h3 title="India 2003-06 Jersey">{i.products}</h3>
+                                                <div className="rating-star-high">
+                                                    <span>{i.Rating}</span>
+                                                    <span>
+                                                        <svg
+                                                            stroke="currentColor"
+                                                            fill="currentColor"
+                                                            strokeWidth="0"
+                                                            viewBox="0 0 576 512"
+                                                            height="1em"
+                                                            width="1em"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="price-info">
+                                                <p className="discounted-price">₹{i.discountprice}</p>
+                                                <p className="price-tag">₹{i.mrp}</p>
+                                            </div>
+                                            <button className="add-to-cart-btn">
                                                 <svg
                                                     stroke="currentColor"
                                                     fill="currentColor"
@@ -575,39 +760,26 @@ export default function Products({ name, ...props }) {
                                                     width="1em"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                 >
-                                                    <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                    <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
                                                 </svg>
-                                            </span>
+                                                Add to Cart
+                                            </button>
                                         </div>
+
+
                                     </div>
-                                    <div className="price-info">
-                                        <p className="discounted-price">₹{i.discountprice}</p>
-                                        <p className="price-tag">₹{i.mrp}</p>
-                                    </div>
-                                    <button className="add-to-cart-btn">
-                                        <svg
-                                            stroke="currentColor"
-                                            fill="currentColor"
-                                            strokeWidth="0"
-                                            viewBox="0 0 576 512"
-                                            height="1em"
-                                            width="1em"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
-                                        </svg>
-                                        Add to Cart
-                                    </button>
                                 </div>
+                            )}
 
-
-                            </div>
                         </div>
-                    )}
 
-                </div>
+                    </div>
+                </Box>
+            </Box>
+            ;
 
-            </div>
+
+
 
 
         </Layout>
