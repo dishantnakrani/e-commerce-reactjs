@@ -30,7 +30,7 @@ const cateGender = [
 
 
 
-const productData = [
+let productData = [
     {
         id: 1,
         products: "chennai super king jercey",
@@ -51,7 +51,7 @@ const productData = [
     },
     {
         id: 2,
-        products: "virat kohli ",
+        products: "Colcata night riders pass",
         thumbnail: "https://res.cloudinary.com/dbe8yf165/image/upload/v1685796121/cricify/fan-merchandise/Kolkata_Knight_Riders_-_Luggage_Bag_Tags_Pack_of_-_1_-231_ymfjeh.jpg",
         Men: "yes",
         Women: "yes",
@@ -425,7 +425,7 @@ const productData = [
         products: "LUCKNOW SUPER GIANTS(LSG) JERSEY",
         thumbnail: "https://res.cloudinary.com/dbe8yf165/image/upload/v1685796159/cricify/ipl/lsg-match-jersey-2023-rahul-899-back-front_ounxgx.jpg",
         Men: "yes",
-        Women: "yes",
+        Women: "no",
         Ipl: "yes",
         Wpl: "yes",
         International: "yes",
@@ -474,9 +474,9 @@ const productData = [
         International: "no",
         Size: "One Size-Free Size",
         Category: "Gears",
-        Rating: "1.9",
-        discountprice: 33999,
-        mrp: 39999,
+        Rating: "4.5",
+        discountprice: 499,
+        mrp: 999,
     }, {
         id: 30,
         products: "KOOKABURRA ADULT CRICKET BAT KB KAHUNA 1000",
@@ -521,6 +521,21 @@ const productData = [
         discountprice: 33999,
         mrp: 39999,
     },
+    {
+        id: 33,
+        products: "Royal Challengers Bangalore 2023 Women's Replica Jersey",
+        thumbnail: "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_600,h_600/global/606407/01/fnd/IND/fmt/png/Royal-Challengers-Bangalore-2023-Women's-Replica-Jersey",
+        Men: "no",
+        Women: "yes",
+        Ipl: "yes",
+        Wpl: "yes",
+        International: "no",
+        Size: "One Size-Free Size",
+        Category: "Jersey",
+        Rating: "5.0",
+        discountprice: 1799,
+        mrp: 1999,
+    },
 
 
 
@@ -531,23 +546,60 @@ const productData = [
 
 export default function Products({ name, ...props }) {
     const [selectedGenders, setSelectedGenders] = useState([]);
-    const [sortOption, setSortOption] = useState('lowToHigh');//for price sorting.
+    const [sortOption, setSortOption] = useState('');//for price sorting.
+    let [categoryFilters, setcategoryFilters] = useState(new Set());//for category jerceys gears merchant. etc.
+    let [collection, setCollaction] = useState('')
+    const [men, setmen] = useState(false);
+    const [women, setwomen] = useState(false);
+
+
 
     const handleSortChange = (event) => {
         setSortOption(event.target.value);
         console.log(event.target.value)
 
 
-        if (event.target.value == 'highToLow') { }
+        if (event.target.value === 'highToLow') {
+            productData.sort((a, b) => b.discountprice - a.discountprice);
+            console.log(productData);
+        }
+        else if (event.target.value === 'lowToHigh') {
+            productData.sort((a, b) => a.discountprice - b.discountprice);
+            console.log(productData)
+
+        }
+    };
+
+    const handlemenChange = (event) => {
+        setCollaction(event.target.checked);
+        console.log(event.target.value);
+
+        if (event.target.value === 'men') {
+            const filteredProducts = productData.filter((xyz) => xyz.Men === "yes");
+            //  setCollaction(filteredProducts)
+            productData = filteredProducts;
+            console.log(filteredProducts);
+        }
+    };
+
+    const handlewomenChange = (event) => {
+        setCollaction(event.target.checked);
+        console.log(event.target.value);
+
+        if (event.target.value === 'women') {
+            let filteredProducts = productData.filter((xyz) => xyz.Women === "yes");
+
+            // setCollaction(filteredProducts)
+
+
+            console.log(filteredProducts)
+            productData = filteredProducts
+            console.log(productData)
+        }
+
     };
 
 
-    let sortedProductList = [...productData];
-    if (sortOption === 'lowToHigh') {
-        sortedProductList.sort((a, b) => a.discountprice - b.discountprice);
-    } else if (sortOption === 'highToLow') {
-        sortedProductList.sort((a, b) => b.discountprice - a.discountprice);
-    }
 
 
     useEffect(() => {
@@ -556,7 +608,6 @@ export default function Products({ name, ...props }) {
 
     //This code for CATEGORIES filter 
 
-    let [categoryFilters, setcategoryFilters] = useState(new Set());
     function updateFilters(checked, categoryFilter) {
         if (checked)
             setcategoryFilters((prev) => new Set(prev).add(categoryFilter));
@@ -589,6 +640,11 @@ export default function Products({ name, ...props }) {
             <Toolbar />
             <Divider />
             <List>
+                <div className='d-flex justify-content-center'>
+                    <p className='category'>
+                        SORT BY
+                    </p>
+                </div>
 
                 <div>
                     <input
@@ -631,6 +687,37 @@ export default function Products({ name, ...props }) {
                         </div>
                     );
                 })}
+
+
+                {/*  collection filter  */}
+
+                <div className='d-flex justify-content-center'>
+                    <p>
+                        Collection
+                    </p>
+                </div>
+                <div className="form-check ms-2" >
+                    <label>
+                        <input
+                            type="checkbox"
+                            onChange={handlemenChange}
+                            value="men"
+                        />
+                        Men
+                    </label>
+                </div>
+
+                <div className="form-check ms-2" >
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            onChange={handlewomenChange}
+                            value="women"
+                        />
+                        Women
+                    </label>
+                </div>
 
 
             </List>
