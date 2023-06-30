@@ -24,13 +24,18 @@ const drawerWidth = 200;
 
 const cateGender = [
     'Jerseys',
-    'merchandise',
+    'Merchandise',
     'Gears'
 ];
 
+const collectiontype = [
+    'men',
+    'women'
+]
 
 
-let productData = [
+
+const productData = [
     {
         id: 1,
         products: "chennai super king jercey",
@@ -41,7 +46,7 @@ let productData = [
         Wpl: "No",
         International: "No",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 5,
         discountprice: 1602,
         mrp: 1790,
@@ -76,7 +81,7 @@ let productData = [
         Wpl: "No",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 4.1,
         discountprice: 1889,
         mrp: 2099,
@@ -139,7 +144,7 @@ let productData = [
         Wpl: "no",
         International: "no",
         Size: "1 Litter",
-        Category: "Jersey",
+        Category: "gears",
         Rating: 4.8,
         discountprice: 24499,
         mrp: 29999,
@@ -169,7 +174,7 @@ let productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 4.8,
         discountprice: 1299,
         mrp: 1399,
@@ -199,7 +204,7 @@ let productData = [
         Wpl: "no",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 4.1,
         discountprice: 2199,
         mrp: 2499,
@@ -229,7 +234,7 @@ let productData = [
         Wpl: "no",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 3.1,
         discountprice: 1259,
         mrp: 1399,
@@ -259,7 +264,7 @@ let productData = [
         Wpl: "no",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 4.9,
         discountprice: 3599,
         mrp: 4999,
@@ -289,7 +294,7 @@ let productData = [
         Wpl: "no",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: 5,
         discountprice: 259,
         mrp: 459,
@@ -359,7 +364,7 @@ let productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: "1.9",
         discountprice: 539,
         mrp: 599,
@@ -373,7 +378,7 @@ let productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: "1.9",
         discountprice: 1184,
         mrp: 1316,
@@ -416,7 +421,7 @@ let productData = [
         Wpl: "no",
         International: "no",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: "1.9",
         discountprice: 1259,
         mrp: 1459,
@@ -430,7 +435,7 @@ let productData = [
         Wpl: "yes",
         International: "yes",
         Size: "One Size-Free Size",
-        Category: "Jerseys",
+        Category: "Jersey",
         Rating: "1.9",
         discountprice: 259,
         mrp: 459,
@@ -545,59 +550,105 @@ let productData = [
 
 
 export default function Products({ name, ...props }) {
-    const [selectedGenders, setSelectedGenders] = useState([]);
+    const [categorydata, setCategorydata] = useState([])// for categoty jercyes gears merchandice etc.
     const [sortOption, setSortOption] = useState('');//for price sorting.
-    let [categoryFilters, setcategoryFilters] = useState(new Set());//for category jerceys gears merchant. etc.
-    let [collection, setCollaction] = useState('')
-    const [men, setmen] = useState(false);
-    const [women, setwomen] = useState(false);
+    const [jerceys, setJerceys] = useState('')
+    const [merchandise, setMerchandise] = useState('')
+    const [gears, setGears] = useState('')
+    const [events, setevents] = useState('')
+    const [filterScreen, setfilterScreen] = useState([])
 
 
 
-    const handleSortChange = (event) => {
+    const handleJerceys = (e) => {
+        let x = []
+        // setJerceys(e.target.checked
+        setevents(e.target.checked)
+
+
+        if (e.target.checked) {
+            for (let i = 0; i < productData.length; i++) {
+                if (productData[i].Category === "Jersey") {
+                    x.push(productData[i])
+                    filterScreen.push(productData[i])
+
+                    setCategorydata(x)
+                }
+            }
+            console.log(categorydata)
+            console.log(filterScreen)
+        }
+
+    }
+
+
+    const handleGears = (e) => {
+        let x = []
+        // setJerceys(e.target.checked
+        setevents(e.target.checked)
+
+
+        if (e.target.checked) {
+            for (let i = 0; i < productData.length; i++) {
+                if (productData[i].Category === "Gears") {
+                    x.push(productData[i])
+                    filterScreen.push(productData[i])
+                    setCategorydata(x)
+                }
+            }
+            console.log(categorydata)
+            console.log(filterScreen)
+
+        }
+    }
+
+    const handleMerchandise = (e) => {
+        let x = []
+        // setJerceys(e.target.checked)
+        setevents(e.target.checked)
+
+
+        if (e.target.checked) {
+            for (let i = 0; i < productData.length; i++) {
+                if (productData[i].Category === "merchandise") {
+                    x.push(productData[i])
+                    filterScreen.push(productData[i])
+                    setCategorydata(x)
+                }
+            }
+            console.log(categorydata)
+            console.log(filterScreen)
+
+        }
+        // else {
+        //     console.log("first")
+        //     x = []
+        //     console.log(x)
+        // }
+    }
+
+
+    const handleSortChange = (event) => { // code for high to low and low to high
         setSortOption(event.target.value);
         console.log(event.target.value)
 
 
         if (event.target.value === 'highToLow') {
             productData.sort((a, b) => b.discountprice - a.discountprice);
-            console.log(productData);
+            filterScreen.sort((a, b) => b.discountprice - a.discountprice);
+
+            console.log(filterScreen);
         }
         else if (event.target.value === 'lowToHigh') {
             productData.sort((a, b) => a.discountprice - b.discountprice);
-            console.log(productData)
+            filterScreen.sort((a, b) => a.discountprice - b.discountprice);
+
+            console.log(filterScreen)
 
         }
     };
 
-    const handlemenChange = (event) => {
-        setCollaction(event.target.checked);
-        console.log(event.target.value);
 
-        if (event.target.value === 'men') {
-            const filteredProducts = productData.filter((xyz) => xyz.Men === "yes");
-            //  setCollaction(filteredProducts)
-            productData = filteredProducts;
-            console.log(filteredProducts);
-        }
-    };
-
-    const handlewomenChange = (event) => {
-        setCollaction(event.target.checked);
-        console.log(event.target.value);
-
-        if (event.target.value === 'women') {
-            let filteredProducts = productData.filter((xyz) => xyz.Women === "yes");
-
-            // setCollaction(filteredProducts)
-
-
-            console.log(filteredProducts)
-            productData = filteredProducts
-            console.log(productData)
-        }
-
-    };
 
 
 
@@ -605,23 +656,6 @@ export default function Products({ name, ...props }) {
     useEffect(() => {
         console.log(productData);
     }, []);
-
-    //This code for CATEGORIES filter 
-
-    function updateFilters(checked, categoryFilter) {
-        if (checked)
-            setcategoryFilters((prev) => new Set(prev).add(categoryFilter));
-        if (!checked)
-            setcategoryFilters((prev) => {
-                const next = new Set(prev);
-                next.delete(categoryFilter);
-                return next;
-            });
-    }
-    const filteredProducts =
-        categoryFilters.size === 0
-            ? productData
-            : productData.filter((p) => categoryFilters.has(p.Category));
 
 
     const { window } = props;
@@ -672,53 +706,40 @@ export default function Products({ name, ...props }) {
                         CATEGORIES
                     </p>
                 </div>
-                {cateGender.map((elm, index) => {
-                    return (
-                        <div className="form-check ms-2" key={index}>
-                            <label className="form-check-label" >
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    onClick={handleCloseDrawer}
-                                    onChange={(e) => updateFilters(e.target.checked, elm)}
-                                />
-                                {elm}
-                            </label>
-                        </div>
-                    );
-                })}
 
-
-                {/*  collection filter  */}
-
-                <div className='d-flex justify-content-center'>
-                    <p>
-                        Collection
-                    </p>
-                </div>
-                <div className="form-check ms-2" >
+                <div>
                     <label>
                         <input
                             type="checkbox"
-                            onChange={handlemenChange}
-                            value="men"
+                            onChange={handleJerceys}
+                            value={jerceys}
                         />
-                        Men
+                        Jerseys
                     </label>
                 </div>
 
-                <div className="form-check ms-2" >
+                <div>
                     <label>
-
                         <input
                             type="checkbox"
-                            onChange={handlewomenChange}
-                            value="women"
+                            onChange={handleGears}
+                            value={gears}
                         />
-                        Women
+                        Gears
                     </label>
                 </div>
 
+                <div>
+                    <label>
+                        <input
+                            type="checkbox"
+                            onChange={handleMerchandise}
+                            value={merchandise}
+                        // checked={false}
+                        />
+                        Merchandise
+                    </label>
+                </div>
 
             </List>
             <Divider />
@@ -793,70 +814,149 @@ export default function Products({ name, ...props }) {
                     <Toolbar />
                     <div>
                         <div className='row d-flex justify-content-center m-0 p-0' >
-                            {filteredProducts.map((i) =>
-                                <div className='col-lg-4 col-md-6'>
-                                    <div className='product-container '>
-                                        <span title="Add to Wishlist" className="wishlist-heart">
-                                            <svg
-                                                stroke="currentColor"
-                                                fill="currentColor"
-                                                strokeWidth="0"
-                                                viewBox="0 0 512 512"
-                                                height="1em"
-                                                width="1em"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
-                                            </svg>
-                                        </span>
-                                        <div className="product-image-container">
-                                            <img className='product-image' src={i.thumbnail} />
 
-                                        </div>
-                                        <div className="product-info">
-                                            <div className="title-rating">
-                                                <h3 title="India 2003-06 Jersey">{i.products}</h3>
-                                                <div className="rating-star-high">
-                                                    <span>{i.Rating}</span>
-                                                    <span>
+                            {
+                                events === true ?
+                                    <>
+                                        {
+                                            filterScreen.map((i) => {
+                                                return (
+                                                    <div className='col-lg-4 col-md-6'>
+                                                        <div className='product-container '>
+                                                            <span title="Add to Wishlist" className="wishlist-heart">
+                                                                <svg
+                                                                    stroke="currentColor"
+                                                                    fill="currentColor"
+                                                                    strokeWidth="0"
+                                                                    viewBox="0 0 512 512"
+                                                                    height="1em"
+                                                                    width="1em"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                    <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
+                                                                </svg>
+                                                            </span>
+                                                            <div className="product-image-container">
+                                                                <img className='product-image' src={i.thumbnail} />
+
+                                                            </div>
+                                                            <div className="product-info">
+                                                                <div className="title-rating">
+                                                                    <h3 title="India 2003-06 Jersey">{i.products}</h3>
+                                                                    <div className="rating-star-high">
+                                                                        <span>{i.Rating}</span>
+                                                                        <span>
+                                                                            <svg
+                                                                                stroke="currentColor"
+                                                                                fill="currentColor"
+                                                                                strokeWidth="0"
+                                                                                viewBox="0 0 576 512"
+                                                                                height="1em"
+                                                                                width="1em"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                            >
+                                                                                <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="price-info">
+                                                                    <p className="discounted-price">₹{i.discountprice}</p>
+                                                                    <p className="price-tag">₹{i.mrp}</p>
+                                                                </div>
+                                                                <button className="add-to-cart-btn">
+                                                                    <svg
+                                                                        stroke="currentColor"
+                                                                        fill="currentColor"
+                                                                        strokeWidth="0"
+                                                                        viewBox="0 0 576 512"
+                                                                        height="1em"
+                                                                        width="1em"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                    >
+                                                                        <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
+                                                                    </svg>
+                                                                    Add to Cart
+                                                                </button>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </>
+                                    :
+                                    <>
+
+                                        {productData.map((i) =>
+                                            <div className='col-lg-4 col-md-6'>
+                                                <div className='product-container '>
+                                                    <span title="Add to Wishlist" className="wishlist-heart">
                                                         <svg
                                                             stroke="currentColor"
                                                             fill="currentColor"
                                                             strokeWidth="0"
-                                                            viewBox="0 0 576 512"
+                                                            viewBox="0 0 512 512"
                                                             height="1em"
                                                             width="1em"
                                                             xmlns="http://www.w3.org/2000/svg"
                                                         >
-                                                            <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                            <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
                                                         </svg>
                                                     </span>
+                                                    <div className="product-image-container">
+                                                        <img className='product-image' src={i.thumbnail} />
+
+                                                    </div>
+                                                    <div className="product-info">
+                                                        <div className="title-rating">
+                                                            <h3 title="India 2003-06 Jersey">{i.products}</h3>
+                                                            <div className="rating-star-high">
+                                                                <span>{i.Rating}</span>
+                                                                <span>
+                                                                    <svg
+                                                                        stroke="currentColor"
+                                                                        fill="currentColor"
+                                                                        strokeWidth="0"
+                                                                        viewBox="0 0 576 512"
+                                                                        height="1em"
+                                                                        width="1em"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                    >
+                                                                        <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="price-info">
+                                                            <p className="discounted-price">₹{i.discountprice}</p>
+                                                            <p className="price-tag">₹{i.mrp}</p>
+                                                        </div>
+                                                        <button className="add-to-cart-btn">
+                                                            <svg
+                                                                stroke="currentColor"
+                                                                fill="currentColor"
+                                                                strokeWidth="0"
+                                                                viewBox="0 0 576 512"
+                                                                height="1em"
+                                                                width="1em"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
+                                                            </svg>
+                                                            Add to Cart
+                                                        </button>
+                                                    </div>
+
+
                                                 </div>
                                             </div>
-                                            <div className="price-info">
-                                                <p className="discounted-price">₹{i.discountprice}</p>
-                                                <p className="price-tag">₹{i.mrp}</p>
-                                            </div>
-                                            <button className="add-to-cart-btn">
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    strokeWidth="0"
-                                                    viewBox="0 0 576 512"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
-                                                </svg>
-                                                Add to Cart
-                                            </button>
-                                        </div>
+                                        )}
+                                    </>
+                            }
 
-
-                                    </div>
-                                </div>
-                            )}
 
                         </div>
 
