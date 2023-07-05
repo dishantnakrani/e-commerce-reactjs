@@ -552,80 +552,19 @@ const productData = [
 export default function Products({ name, ...props }) {
     const [categorydata, setCategorydata] = useState([])// for categoty jercyes gears merchandice etc.
     const [sortOption, setSortOption] = useState('');//for price sorting.
-    const [jerceys, setJerceys] = useState('')
-    const [merchandise, setMerchandise] = useState('')
-    const [gears, setGears] = useState('')
+    const [jerceys, setJerceys] = useState(true)
+    const [merchandise, setMerchandise] = useState(true)
+    const [gears, setGears] = useState(true)
     const [events, setevents] = useState('')
     const [filterScreen, setfilterScreen] = useState([])
 
+    useEffect(() => {
+        console.log(productData);
+    }, []);
 
 
-    const handleJerceys = (e) => {
-        let x = []
-        // setJerceys(e.target.checked
-        setevents(e.target.checked)
 
 
-        if (e.target.checked) {
-            for (let i = 0; i < productData.length; i++) {
-                if (productData[i].Category === "Jersey") {
-                    x.push(productData[i])
-                    filterScreen.push(productData[i])
-
-                    setCategorydata(x)
-                }
-            }
-            console.log(categorydata)
-            console.log(filterScreen)
-        }
-
-    }
-
-
-    const handleGears = (e) => {
-        let x = []
-        // setJerceys(e.target.checked
-        setevents(e.target.checked)
-
-
-        if (e.target.checked) {
-            for (let i = 0; i < productData.length; i++) {
-                if (productData[i].Category === "Gears") {
-                    x.push(productData[i])
-                    filterScreen.push(productData[i])
-                    setCategorydata(x)
-                }
-            }
-            console.log(categorydata)
-            console.log(filterScreen)
-
-        }
-    }
-
-    const handleMerchandise = (e) => {
-        let x = []
-        // setJerceys(e.target.checked)
-        setevents(e.target.checked)
-
-
-        if (e.target.checked) {
-            for (let i = 0; i < productData.length; i++) {
-                if (productData[i].Category === "merchandise") {
-                    x.push(productData[i])
-                    filterScreen.push(productData[i])
-                    setCategorydata(x)
-                }
-            }
-            console.log(categorydata)
-            console.log(filterScreen)
-
-        }
-        // else {
-        //     console.log("first")
-        //     x = []
-        //     console.log(x)
-        // }
-    }
 
 
     const handleSortChange = (event) => { // code for high to low and low to high
@@ -637,6 +576,7 @@ export default function Products({ name, ...props }) {
             productData.sort((a, b) => b.discountprice - a.discountprice);
             filterScreen.sort((a, b) => b.discountprice - a.discountprice);
 
+            console.log(productData)
             console.log(filterScreen);
         }
         else if (event.target.value === 'lowToHigh') {
@@ -644,18 +584,52 @@ export default function Products({ name, ...props }) {
             filterScreen.sort((a, b) => a.discountprice - b.discountprice);
 
             console.log(filterScreen)
-
+            console.log(productData)
         }
     };
 
+    const handleCatChange = (data) => {
+        // console.log(categorydata)
+        // console.log("a")
+
+        if (data === "jerceys") {
+
+            if (jerceys == true) {
+                console.log("cate:", jerceys)
+            }
+            else {
+                console.log("cate", jerceys)
+            }
+            setJerceys(!jerceys)
+        }
+        else if (data === "gears") {
+
+            if (gears == true) {
+                console.log("cate:", gears)
+            }
+            else {
+                console.log("cate:", gears)
+            }
+            setGears(!gears)
+
+        }
+        else if (data === "merchandise") {
+            if (merchandise == true) {
+                console.log("cate:", merchandise)
+            }
+            else {
+                console.log("cate:", merchandise)
+            }
+            setMerchandise(!merchandise)
+        }
+    }
 
 
 
 
 
-    useEffect(() => {
-        console.log(productData);
-    }, []);
+
+
 
 
     const { window } = props;
@@ -711,7 +685,7 @@ export default function Products({ name, ...props }) {
                     <label>
                         <input
                             type="checkbox"
-                            onChange={handleJerceys}
+                            onChange={() => handleCatChange("jerceys")}
                             value={jerceys}
                         />
                         Jerseys
@@ -722,7 +696,8 @@ export default function Products({ name, ...props }) {
                     <label>
                         <input
                             type="checkbox"
-                            onChange={handleGears}
+                            onChange={() => handleCatChange("gears")}
+
                             value={gears}
                         />
                         Gears
@@ -733,7 +708,7 @@ export default function Products({ name, ...props }) {
                     <label>
                         <input
                             type="checkbox"
-                            onChange={handleMerchandise}
+                            onChange={() => handleCatChange("merchandise")}
                             value={merchandise}
                         // checked={false}
                         />
@@ -821,7 +796,7 @@ export default function Products({ name, ...props }) {
                                         {
                                             filterScreen.map((i) => {
                                                 return (
-                                                    <div className='col-lg-4 col-md-6'>
+                                                    <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
                                                         <div className='product-container '>
                                                             <span title="Add to Wishlist" className="wishlist-heart">
                                                                 <svg
@@ -891,7 +866,7 @@ export default function Products({ name, ...props }) {
                                     <>
 
                                         {productData.map((i) =>
-                                            <div className='col-lg-4 col-md-6'>
+                                            <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
                                                 <div className='product-container '>
                                                     <span title="Add to Wishlist" className="wishlist-heart">
                                                         <svg
