@@ -19,6 +19,17 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Header from './Header';
+import { NavLink } from 'react-router-dom';
+import { useCart } from 'react-use-cart';
+import Cart from './Cart'
+import Wishlist from './Wishlist';
+import { useContext } from 'react';
+import NoteContext from './Context/NoteContext';
+import { Context } from './Context/NoteContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
 
 const drawerWidth = 200;
 
@@ -546,21 +557,60 @@ const productData = [
 
 ]
 
+let cartItems = []
+
 
 
 
 export default function Products({ name, ...props }) {
     const [categorydata, setCategorydata] = useState([])// for categoty jercyes gears merchandice etc.
-    const [sortOption, setSortOption] = useState('');//for price sorting.
+    const [sortOption, setSortOption] = useState('');//for price high low   .
     const [jerceys, setJerceys] = useState(true)
     const [merchandise, setMerchandise] = useState(true)
     const [gears, setGears] = useState(true)
     const [events, setevents] = useState('')
     const [filterScreen, setfilterScreen] = useState([])
+    const [data, setData] = useState([])
+    const [addtocard, setAddToCart] = useState([])
+
+
+    const a = useContext(NoteContext)
+
+
+
 
     useEffect(() => {
-        console.log(productData);
+        // console.log(productData);
+        // console.log(a, "context");
+
     }, []);
+
+
+
+    // const [cartItems, setCartItems] = useState([]);
+
+
+    let addtoCart = (e) => {
+        // setCartItems([...cartItems, e]);
+        cartItems.push(e);
+        localStorage.setItem('localCart', JSON.stringify(cartItems));
+
+        console.log("🚀 ~ file: Products.js:596 ~ addtoCart ~ cartItems:", cartItems)
+
+        toast.success('product added succssfully', {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+
+
+    }
 
 
 
@@ -573,17 +623,17 @@ export default function Products({ name, ...props }) {
 
 
         if (event.target.value === 'highToLow') {
-            productData.sort((a, b) => b.discountprice - a.discountprice);
+            a.sort((a, b) => b.discountprice - a.discountprice);
             filterScreen.sort((a, b) => b.discountprice - a.discountprice);
 
-            console.log(productData)
+            console.log(a)
             console.log(filterScreen);
         }
         else if (event.target.value === 'lowToHigh') {
-            productData.sort((a, b) => a.discountprice - b.discountprice);
+            a.sort((a, b) => a.discountprice - b.discountprice);
             filterScreen.sort((a, b) => a.discountprice - b.discountprice);
 
-            console.log(filterScreen)
+            console.log(a)
             console.log(productData)
         }
     };
@@ -595,7 +645,7 @@ export default function Products({ name, ...props }) {
         if (data === "jerceys") {
 
             if (jerceys == true) {
-                console.log("cate:", jerceys)
+
             }
             else {
                 console.log("cate", jerceys)
@@ -642,6 +692,7 @@ export default function Products({ name, ...props }) {
             setMobileOpen(false);
         }
     };
+
 
     const drawer = (
         <div>
@@ -709,7 +760,7 @@ export default function Products({ name, ...props }) {
                         <input
                             type="checkbox"
                             onChange={() => handleCatChange("merchandise")}
-                            value={merchandise}
+                        // value={merchandise}
                         // checked={false}
                         />
                         Merchandise
@@ -726,224 +777,249 @@ export default function Products({ name, ...props }) {
 
 
     return (
-        <Layout>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    sx={{
-                        width: { sm: `calc(100% - ${drawerWidth}px)` },
-                        ml: { sm: `${drawerWidth}px` },
-                    }}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { sm: 'none' } }}
+        <>
+            <Layout>
+                <Box sx={{ display: 'flex' }}>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        sx={{
+                            width: { sm: `calc(100% - ${drawerWidth}px)` },
+                            ml: { sm: `${drawerWidth}px` },
+                        }}
+                    >
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                edge="start"
+                                onClick={handleDrawerToggle}
+                                sx={{ mr: 2, display: { sm: 'none' } }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" noWrap component="div">
+                                Responsive drawer
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Box
+                        component="nav"
+                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                        aria-label="mailbox folders"
+                    >
+                        <Drawer
+                            container={container}
+                            variant="temporary"
+                            open={mobileOpen}
+                            onClose={handleDrawerToggle}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
+                            sx={{
+                                display: { xs: 'block', sm: 'none' },
+                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                            }}
                         >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap component="div">
-                            Responsive drawer
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Box
-                    component="nav"
-                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                    aria-label="mailbox folders"
-                >
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                        sx={{
-                            display: { xs: 'block', sm: 'none' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                        }}
+                            {drawer}
+                        </Drawer>
+                        <Drawer
+                            variant="permanent"
+                            sx={{
+                                display: { xs: 'none', sm: 'block' },
+                                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                            }}
+                            open
+                        >
+                            {drawer}
+                        </Drawer>
+                    </Box>
+                    <Box
+                        component="main"
+                        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
                     >
-                        {drawer}
-                    </Drawer>
-                    <Drawer
-                        variant="permanent"
-                        sx={{
-                            display: { xs: 'none', sm: 'block' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                        }}
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Box>
-                <Box
-                    component="main"
-                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-                >
-                    <Toolbar />
-                    <div>
-                        <div className='row d-flex justify-content-center m-0 p-0' >
+                        <Toolbar />
+                        <div>
+                            <div className='row d-flex justify-content-center m-0 p-0' >
 
-                            {
-                                events === true ?
-                                    <>
-                                        {
-                                            filterScreen.map((i) => {
-                                                return (
-                                                    <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
-                                                        <div className='product-container '>
-                                                            <span title="Add to Wishlist" className="wishlist-heart">
-                                                                <svg
-                                                                    stroke="currentColor"
-                                                                    fill="currentColor"
-                                                                    strokeWidth="0"
-                                                                    viewBox="0 0 512 512"
-                                                                    height="1em"
-                                                                    width="1em"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                >
-                                                                    <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
-                                                                </svg>
-                                                            </span>
-                                                            <div className="product-image-container">
-                                                                <img className='product-image' src={i.thumbnail} />
-
-                                                            </div>
-                                                            <div className="product-info">
-                                                                <div className="title-rating">
-                                                                    <h3 title="India 2003-06 Jersey">{i.products}</h3>
-                                                                    <div className="rating-star-high">
-                                                                        <span>{i.Rating}</span>
-                                                                        <span>
-                                                                            <svg
-                                                                                stroke="currentColor"
-                                                                                fill="currentColor"
-                                                                                strokeWidth="0"
-                                                                                viewBox="0 0 576 512"
-                                                                                height="1em"
-                                                                                width="1em"
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                            >
-                                                                                <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="price-info">
-                                                                    <p className="discounted-price">₹{i.discountprice}</p>
-                                                                    <p className="price-tag">₹{i.mrp}</p>
-                                                                </div>
-                                                                <button className="add-to-cart-btn">
+                                {
+                                    events === true ?
+                                        <>
+                                            {
+                                                filterScreen.map((i) => {
+                                                    return (
+                                                        <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
+                                                            <div className='product-container '>
+                                                                <span title="Add to Wishlist" className="wishlist-heart">
                                                                     <svg
                                                                         stroke="currentColor"
                                                                         fill="currentColor"
                                                                         strokeWidth="0"
-                                                                        viewBox="0 0 576 512"
+                                                                        viewBox="0 0 512 512"
                                                                         height="1em"
                                                                         width="1em"
                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                     >
-                                                                        <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
-                                                                    </svg>
-                                                                    Add to Cart
-                                                                </button>
-                                                            </div>
-
-
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </>
-                                    :
-                                    <>
-
-                                        {productData.map((i) =>
-                                            <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
-                                                <div className='product-container '>
-                                                    <span title="Add to Wishlist" className="wishlist-heart">
-                                                        <svg
-                                                            stroke="currentColor"
-                                                            fill="currentColor"
-                                                            strokeWidth="0"
-                                                            viewBox="0 0 512 512"
-                                                            height="1em"
-                                                            width="1em"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                            <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <div className="product-image-container">
-                                                        <img className='product-image' src={i.thumbnail} />
-
-                                                    </div>
-                                                    <div className="product-info">
-                                                        <div className="title-rating">
-                                                            <h3 title="India 2003-06 Jersey">{i.products}</h3>
-                                                            <div className="rating-star-high">
-                                                                <span>{i.Rating}</span>
-                                                                <span>
-                                                                    <svg
-                                                                        stroke="currentColor"
-                                                                        fill="currentColor"
-                                                                        strokeWidth="0"
-                                                                        viewBox="0 0 576 512"
-                                                                        height="1em"
-                                                                        width="1em"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                    >
-                                                                        <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                                        <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
                                                                     </svg>
                                                                 </span>
+                                                                <div className="product-image-container">
+                                                                    <img className='product-image' src={i.thumbnail} />
+
+                                                                </div>
+                                                                <div className="product-info">
+                                                                    <div className="title-rating">
+                                                                        <h3 title="India 2003-06 Jersey">{i.products}</h3>
+                                                                        <div className="rating-star-high">
+                                                                            <span>{i.Rating}</span>
+                                                                            <span>
+                                                                                <svg
+                                                                                    stroke="currentColor"
+                                                                                    fill="currentColor"
+                                                                                    strokeWidth="0"
+                                                                                    viewBox="0 0 576 512"
+                                                                                    height="1em"
+                                                                                    width="1em"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                >
+                                                                                    <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="price-info">
+                                                                        <p className="discounted-price">₹{i.discountprice}</p>
+                                                                        <p className="price-tag">₹{i.mrp}</p>
+                                                                    </div>
+
+
+                                                                    {/* <Cart card={filterScreen} /> */}
+
+                                                                    <button className="add-to-cart-btn" onClick={() => addtoCart(i.id)}>
+                                                                        <svg
+                                                                            stroke="currentColor"
+                                                                            fill="currentColor"
+                                                                            strokeWidth="0"
+                                                                            viewBox="0 0 576 512"
+                                                                            height="1em"
+                                                                            width="1em"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                        >
+                                                                            <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
+                                                                        </svg>
+                                                                        Add to Cart
+
+                                                                        {/* Same as */}
+                                                                    </button>
+
+                                                                    {/* </NavLink> */}
+                                                                </div>
+
+
                                                             </div>
                                                         </div>
-                                                        <div className="price-info">
-                                                            <p className="discounted-price">₹{i.discountprice}</p>
-                                                            <p className="price-tag">₹{i.mrp}</p>
-                                                        </div>
-                                                        <button className="add-to-cart-btn">
+                                                    )
+                                                })
+                                            }
+                                        </>
+                                        :
+                                        <>
+
+                                            {productData.map((i) =>
+                                                <div className='col-lg-4 col-md-6 d-flex justify-content-center'>
+                                                    <div className='product-container '>
+                                                        <span title="Add to Wishlist" className="wishlist-heart">
                                                             <svg
                                                                 stroke="currentColor"
                                                                 fill="currentColor"
                                                                 strokeWidth="0"
-                                                                viewBox="0 0 576 512"
+                                                                viewBox="0 0 512 512"
                                                                 height="1em"
                                                                 width="1em"
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                             >
-                                                                <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
+                                                                <path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path>
                                                             </svg>
-                                                            Add to Cart
-                                                        </button>
+                                                        </span>
+                                                        <div className="product-image-container">
+                                                            <img className='product-image' src={i.thumbnail} />
+
+                                                        </div>
+                                                        <div className="product-info">
+                                                            <div className="title-rating">
+                                                                <h3 title="India 2003-06 Jersey">{i.products}</h3>
+                                                                <div className="rating-star-high">
+                                                                    <span>{i.Rating}</span>
+                                                                    <span>
+                                                                        <svg
+                                                                            stroke="currentColor"
+                                                                            fill="currentColor"
+                                                                            strokeWidth="0"
+                                                                            viewBox="0 0 576 512"
+                                                                            height="1em"
+                                                                            width="1em"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                        >
+                                                                            <path d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="price-info">
+                                                                <p className="discounted-price">₹{i.discountprice}</p>
+                                                                <p className="price-tag">₹{i.mrp}</p>
+                                                            </div>
+
+
+                                                            {/* <Cart card={productData} /> */}
+
+                                                            <button className="add-to-cart-btn" onClick={() => addtoCart(i)}>
+                                                                <svg
+                                                                    stroke="currentColor"
+                                                                    fill="currentColor"
+                                                                    strokeWidth="0"
+                                                                    viewBox="0 0 576 512"
+                                                                    height="1em"
+                                                                    width="1em"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                    <path d="M504.717 320H211.572l6.545 32h268.418c15.401 0 26.816 14.301 23.403 29.319l-5.517 24.276C523.112 414.668 536 433.828 536 456c0 31.202-25.519 56.444-56.824 55.994-29.823-.429-54.35-24.631-55.155-54.447-.44-16.287 6.085-31.049 16.803-41.548H231.176C241.553 426.165 248 440.326 248 456c0 31.813-26.528 57.431-58.67 55.938-28.54-1.325-51.751-24.385-53.251-52.917-1.158-22.034 10.436-41.455 28.051-51.586L93.883 64H24C10.745 64 0 53.255 0 40V24C0 10.745 10.745 0 24 0h102.529c11.401 0 21.228 8.021 23.513 19.19L159.208 64H551.99c15.401 0 26.816 14.301 23.403 29.319l-47.273 208C525.637 312.246 515.923 320 504.717 320zM408 168h-48v-40c0-8.837-7.163-16-16-16h-16c-8.837 0-16 7.163-16 16v40h-48c-8.837 0-16 7.163-16 16v16c0 8.837 7.163 16 16 16h48v40c0 8.837 7.163 16 16 16h16c8.837 0 16-7.163 16-16v-40h48c8.837 0 16-7.163 16-16v-16c0-8.837-7.163-16-16-16z"></path>
+                                                                </svg>
+                                                                Add to Cart
+                                                            </button>
+
+                                                            {/* </NavLink> */}
+                                                        </div>
+
+
                                                     </div>
 
-
                                                 </div>
-                                            </div>
-                                        )}
-                                    </>
-                            }
 
+                                            )}
+
+                                        </>
+                                }
+
+
+                            </div>
 
                         </div>
-
-                    </div>
+                    </Box>
                 </Box>
-            </Box>
-            ;
+                <ToastContainer />
+                ;
 
 
 
 
 
-        </Layout>
+                {/* <NoteContext.Provider value={cartItems}>
+                    {props.children}
+                </NoteContext.Provider> */}
+
+            </Layout >
+
+        </>
     )
 }

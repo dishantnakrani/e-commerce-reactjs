@@ -20,3 +20,7 @@ a {
 .custom-toolbar {
   /* z-index: 1; */
 }
+
+.hello {
+  display: none;
+}

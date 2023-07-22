@@ -7,24 +7,27 @@ import Products from './Products';
 import Cart from './Cart';
 import Profile from './Profile';
 import Wishlist from './Wishlist';
+import NoteState from './Context/NoteState';
+import Cartitem from './Cartitem';
 
 
 function App() {
   return (
     <>
-      {/* <Header /> */}
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path="products" element={<Products />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="cart" element={<Cart />} />
+      <NoteState>
+        <BrowserRouter>
+          <Routes>
+            < Route path='/' element={<Home />} />
+            <Route path="products" element={<Products />} />
+            <Route path="wishlist" element={<Wishlist />} />
 
-        </Routes>
-      </BrowserRouter>
+            <Route path="profile" element={<Profile />} />
 
+            <Route path="cart" element={<Cart />} />
 
+          </Routes>
+        </BrowserRouter>
+      </NoteState>
     </>
   );
 }
