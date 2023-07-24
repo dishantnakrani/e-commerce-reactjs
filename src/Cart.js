@@ -22,6 +22,11 @@ export default function Cart() {
 
     useEffect(() => {
         setCartItems(JSON.parse(localStorage.getItem('localCart')));
+        setTotal(calculateTotalPrice());
+        setCartItems((prevCartItems) => {
+            return [...prevCartItems]; // Dummy update to trigger re-render
+        });
+
 
     }, [quantity])
 
@@ -55,7 +60,10 @@ export default function Cart() {
         return totalPrice;
     };
 
-
+    const handleQuantityChange = (event) => {
+        const newQuantity = Number(event.target.value);
+        setQuantity(newQuantity);
+    };
 
 
 
@@ -72,7 +80,7 @@ export default function Cart() {
                                 <div>
                                     {cartItems && cartItems.length > 0 ? (
                                         cartItems.map((item, index) => (
-                                            <Cartitem data={item} remove={handledelete} />
+                                            <Cartitem data={item} quantity={quantity} remove={handledelete} />
 
                                             // <div key={index} className='cart-product-container'>
                                             //     <div className='cart-product-image-container'>

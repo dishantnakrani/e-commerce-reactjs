@@ -3,12 +3,15 @@ import React, { useState } from 'react'
 export default function Cartitem(props) {
 
     const [quantity, setQuantity] = useState(1)
+    let [total, setTotal] = useState('')
 
 
 
 
     const handleIncrement = () => {
         setQuantity((prevQuantity) => prevQuantity + 1);
+        setTotal(quantity)
+        console.log(quantity)
     };
 
     const handleDecrement = (e) => {
@@ -16,14 +19,13 @@ export default function Cartitem(props) {
         if (quantity > 1) {
             setQuantity((prevQuantity) => prevQuantity - 1);
         }
+        setTotal(quantity)
+        console.log(quantity)
     };
 
-    const handleQuantityChange = (event) => {
-        const newQuantity = Number(event.target.value);
-        setQuantity(newQuantity);
-    };
 
-    let total = quantity * props.data.discountprice;
+
+    total = quantity * props.data.discountprice;
 
 
 
